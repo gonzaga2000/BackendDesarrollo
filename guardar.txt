@@ -1,0 +1,16 @@
+if (!email || !password || !firstName || !lastName) throw new Error("Todos los campos son obligatorios.");
+
+const hashedPassword = await bcrypt.hash(password, 10);
+
+if (role == "CLIENT"){
+  let newUser = await prisma.client.create({
+    data: { email, password: hashedPassword, firstName, lastName, role, company, country },
+  });
+
+  // Es admin o empleado
+}else{
+  let newUser = await prisma.user.create({
+    data: { email, password: hashedPassword, firstName, lastName, role},
+  });
+}
+return res.json("registrado");

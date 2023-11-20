@@ -1,45 +1,33 @@
 import { Request, Response, NextFunction } from "express";
-import jwt from "jsonwebtoken";
 import { PrismaClient } from "@prisma/client";
 import dotenv from "dotenv";
-
+import jwksClient from 'jwks-rsa';
+import jwt from 'jsonwebtoken';
 dotenv.config();
 
 const prisma = new PrismaClient();
-const JWT_SECRET = process.env.JWT_SECRET || "secret";
+// Configuración del cliente JWKS
 
 export const userMustBeLogged = async (req: Request, res: Response, next: NextFunction) => {
   try {
     console.log("Ejecutando middleware verifica que usuario exista y lo agrega al req.body");
-    if (!req.headers.authorization) throw new Error("El token no fue enviado");
-    const userToken = req.headers.authorization.split(" ")[1];
-    const decodedToken = jwt.verify(userToken, JWT_SECRET) as { user: { id: string } };
-    
-    const user = await prisma.user.findUnique({
-      where: { id: decodedToken.user.id },
-    });
+    const userId = req.body.userId;
+    const role = "CLIENT";
+    console.log("Imprimiendo el ID del usuario:", userId);
 
+    const user = await prisma.user.findFirst({ where: { id:userId } });
     console.log(user)
-
-    const client = await prisma.client.findUnique({
-        where: { id: decodedToken.user.id },
-      });
-
-    
+    const client = await prisma.client.findFirst({ where: { id:userId } });
     console.log(client)
-    if (!user && !client) throw new Error("El usuario del token recibido no existe.");
 
     if (user){
-        req.body.requestUser = user;
-        console.log("es usuario");
+      req.body.requestUser= user;
     }
-
     if (client){
-        req.body.requestUser = client;
-        console.log("es cliente");
+      req.body.requestUser= client;
 
     }
-    
+  
     next();
     return;
   } catch (error: any) {

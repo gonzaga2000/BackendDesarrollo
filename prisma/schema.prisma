@@ -12,11 +12,10 @@ datasource db {
 
 
 model User {
-  id                String     @id @default(uuid())
-  email            String            @unique 
-  password         String            
-  firstName        String            
-  lastName         String            
+  id               String     @id
+  email            String?            @unique            
+  firstName        String?           
+  lastName         String?            
   role             String        
   createdAt        DateTime          @default(now())
   updatedAt        DateTime          @updatedAt
@@ -39,11 +38,10 @@ model Meeting {
 
 
 model Client {
-  id           String     @id @default(uuid())
-  email        String    @unique 
-  password     String            
-  firstName    String            
-  lastName     String            
+  id           String     @id
+  email        String?    @unique             
+  firstName    String?            
+  lastName     String?            
   role         String
   meetings     Meeting[]      
   country      String?
