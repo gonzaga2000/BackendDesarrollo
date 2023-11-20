@@ -1,14 +1,14 @@
 import express from "express";
-//import { userMustBeLogged, userMustBeEmployee, userMustBeClient } from "../../../middlewares/auth.middlewares";
-//import { getMeetings, getMeeting,} from "../../../controllers/meetings/client/meetings.controller";
+import { userMustBeLogged, userMustBeClient } from "../../../middlewares/auth.middlewares";
+import { getMeetings, getMeeting,} from "../../../controllers/meetings/client/meetings.controller";
 
 const router = express.Router();
 
-//router.use(userMustBeLogged);
-//router.use(userMustBeClient);
+router.use(userMustBeLogged);
+router.use(userMustBeClient);
 
-//router.get("/", getMeetings);
-//router.get("/:id", getMeeting);
+router.get("/", getMeetings);
+router.get("/:id", getMeeting);
 
 
 export default router;
