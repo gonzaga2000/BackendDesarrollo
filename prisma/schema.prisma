@@ -1,0 +1,59 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+
+model User {
+  id                String     @id @default(uuid())
+  email            String            @unique 
+  password         String            
+  firstName        String            
+  lastName         String            
+  role             String        
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+  meetings         Meeting[] 
+}
+
+model Meeting {
+  id           Int        @id @default(autoincrement())                 
+  description  String
+  fecha        DateTime          
+  owner        User       @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  ownerId      String
+  client       Client?     @relation(fields: [clientId], references: [id])
+  clientId     String?
+  clientMail   String
+  externalMail String
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+}
+
+
+model Client {
+  id           String     @id @default(uuid())
+  email        String    @unique 
+  password     String            
+  firstName    String            
+  lastName     String            
+  role         String
+  meetings     Meeting[]      
+  country      String?
+  company      String?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+}
+
+
+
+
+
+
