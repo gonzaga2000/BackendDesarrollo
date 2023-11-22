@@ -11,7 +11,7 @@ export const loginUser = async (req: Request, res: Response) => {
   try {
 
     const email = req.body.email;
-    const userId = req.body.userId;
+    const userId = req.body.id;
     const firstname = req.body.name;
     const role = req.body.role;
     console.log("Imprimiendo el ID del usuario:", userId);
@@ -30,7 +30,6 @@ export const loginUser = async (req: Request, res: Response) => {
             email: email,
             firstName: firstname
           }
-        
         }); 
         console.log("se agrego el usuario tipo ", client.role)
       }else{

@@ -15,6 +15,7 @@ export const getMeetings = async (req: Request, res: Response) => {
     }
 };
 
+
 export const getMeeting = async (req: Request, res: Response) => {
     try {
         const { id } = req.params;
@@ -31,7 +32,7 @@ export const getMeeting = async (req: Request, res: Response) => {
 
 export const createMeeting = async (req: Request, res: Response) => {
     try {
-      const { description, fecha, clientMail, externalMail } = req.body;
+      const { description, fecha, clientMail} = req.body;
       const client = await prisma.client.findUnique({
         where: { email: clientMail }
     });
@@ -42,7 +43,7 @@ export const createMeeting = async (req: Request, res: Response) => {
           owner: { connect: { id: req.body.requestUser.id } },
           clientMail: clientMail,
           client: { connect: { id: client?.id } },
-          externalMail: externalMail
+          externalMail: "externalMail"
         }
       }); // Corrección aquí: se elimina un paréntesis adicional.
       

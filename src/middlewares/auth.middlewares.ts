@@ -26,7 +26,6 @@ export const userMustBeLogged = async (req: Request, res: Response, next: NextFu
       req.body.requestUser= client;
 
     }
-  
     next();
     return;
   } catch (error: any) {
