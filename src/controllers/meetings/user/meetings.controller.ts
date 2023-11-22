@@ -32,7 +32,7 @@ export const getMeeting = async (req: Request, res: Response) => {
 
 export const createMeeting = async (req: Request, res: Response) => {
     try {
-      const { description, fecha, clientMail} = req.body;
+      const { description, fecha, clientMail, clientActual} = req.body;
       const client = await prisma.client.findUnique({
         where: { email: clientMail }
     });
