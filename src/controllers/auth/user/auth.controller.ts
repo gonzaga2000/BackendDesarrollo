@@ -10,8 +10,10 @@ const prisma = new PrismaClient();
 export const loginUser = async (req: Request, res: Response) => {
   try {
 
+    const email = req.body.email;
     const userId = req.body.userId;
-    const role = "CLIENT";
+    const firstname = req.body.name;
+    const role = req.body.role;
     console.log("Imprimiendo el ID del usuario:", userId);
 
     const user = await prisma.user.findFirst({ where: { id:userId } });
@@ -24,18 +26,23 @@ export const loginUser = async (req: Request, res: Response) => {
         const client = await prisma.client.create({
           data: {
             id: userId,
-            role: "CLIENT"
+            role: role,
+            email: email,
+            firstName: firstname
           }
         
         }); 
-        console.log("se agrego el usuario tipo cliente", client)
+        console.log("se agrego el usuario tipo ", client.role)
       }else{
         const user = await prisma.user.create({
           data: {
             id: userId,
-            role: "ADMIN"
+            role: role,
+            email: email,
+            firstName: firstname
           }
         });
+        console.log("se agrego el usuario tipo", user.role)
       }
     }else{
       console.log("el usuario ya existe de antes", user, client);

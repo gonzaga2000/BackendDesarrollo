@@ -12,7 +12,6 @@ export const userMustBeLogged = async (req: Request, res: Response, next: NextFu
   try {
     console.log("Ejecutando middleware verifica que usuario exista y lo agrega al req.body");
     const userId = req.body.userId;
-    const role = "CLIENT";
     console.log("Imprimiendo el ID del usuario:", userId);
 
     const user = await prisma.user.findFirst({ where: { id:userId } });
@@ -57,7 +56,7 @@ export const userMustBeEmployee = async (req: Request, res: Response, next: Next
       console.log("Ejecutando middleware verifica que el usuario sea empleado");
       const user = req.body.requestUser;
       console.log("El rol del usuario es ->", user.role);
-      if (user.role !== "EMPLOYEE") throw new Error("El usuario del token no es EMPLEADO");
+      if (user.role !== "WORKER") throw new Error("El usuario del token no es EMPLEADO");
       next();
       return;
     } catch (error: any) {
