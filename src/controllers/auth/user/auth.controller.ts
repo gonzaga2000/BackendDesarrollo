@@ -3,6 +3,7 @@ import jwt from "jsonwebtoken";
 import { PrismaClient } from "@prisma/client";
 import dotenv from "dotenv";
 import bcrypt from "bcrypt";
+
 dotenv.config();
 
 const prisma = new PrismaClient();
@@ -54,4 +55,3 @@ export const loginUser = async (req: Request, res: Response) => {
     await prisma.$disconnect();
   }
 };
-
