@@ -3,6 +3,8 @@ import jwt from "jsonwebtoken";
 import { PrismaClient } from "@prisma/client";
 import dotenv from "dotenv";
 import bcrypt from "bcrypt";
+import request from "supertest";
+
 dotenv.config();
 
 const prisma = new PrismaClient();
@@ -54,4 +56,14 @@ export const loginUser = async (req: Request, res: Response) => {
     await prisma.$disconnect();
   }
 };
+
+describe('POST /auth/login', () => {
+  it('should create a new user and return 200 status code', async () => {
+    const response = await request(app)
+      .post('/auth/login')
+      .send({ email: 'test@example.com', id: '123', name: 'Test User', role: 'CLIENT' });
+    expect(response.statusCode).toBe(200);
+    expect(response.body).toHaveProperty('id');
+  });
+});
 
