@@ -1,20 +1,25 @@
 import request from 'supertest';
 import app from '../../../../src/app';
 
-// describe('GET /meetings/client', () => {
-//     it('should return meetings for a specific client', async () => {
-//       const response = await request(app).get('/meetings/client').send({ clientId: 'client-id' });
-//       expect(response.statusCode).toBe(200);
-//       expect(Array.isArray(response.body)).toBe(true);
-//     });
-//   });
 
 describe('GET /meetings/client', () => {
-  it('should return meetings for a specific client', async () => {
-    const userId = 'your-user-id';  // Reemplaza 'your-user-id' con el ID real del usuario
+  let userId: string;
 
+  beforeAll(async () => {
+    const loginResponse = await request(app)
+      .post('/auth/login')
+      .send({ email: 'testClient@example.com', id: '123', firstName: 'Test Client', role: 'CLIENT' });
+
+    expect(loginResponse.statusCode).toBe(200);
+
+    userId = loginResponse.body.id;
+  });
+
+
+
+  it('should return meetings for a specific client', async () => {
     const response = await request(app)
-      .get('/meetings/client')
+      .get('/client/meetings')
       .set('userId', userId);
 
     expect(response.statusCode).toBe(200);
