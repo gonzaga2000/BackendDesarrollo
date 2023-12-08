@@ -17,6 +17,7 @@ export const loginUser = async (req: Request, res: Response) => {
     const role = req.body.role;
     console.log("Imprimiendo el ID del usuario:", userId);
 
+    console.log("Antes de la consulta a la base de datos");
     const user = await prisma.user.findFirst({ where: { id:userId } });
     console.log(user)
     const client = await prisma.client.findFirst({ where: { id:userId } });
@@ -47,7 +48,7 @@ export const loginUser = async (req: Request, res: Response) => {
     }else{
       console.log("el usuario ya existe de antes", user, client);
     }
-    
+    return res.status(200).json({ message: "Usuario creado correctamente", id: userId });
   } catch (error: any) {
     console.error("Error al intentar registrar un nuevo usuario ->", error.message);
     return res.status(500).json({ message: error.message });
