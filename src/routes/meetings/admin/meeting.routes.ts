@@ -4,6 +4,7 @@ import {
     getMeetings,
     getMeeting,
     deleteMeeting,
+    updateMeeting
     // ver que mas pued hacer
 } from "../../../controllers/meetings/admin/meetings.controller";
 
@@ -13,9 +14,9 @@ router.use(userMustBeLogged);
 router.use(userMustBeAdmin);
 
 
-// agregar mas weas ue pueda hacer
 router.get("/", getMeetings);
 router.get("/:id", getMeeting);
 router.delete("/:id", deleteMeeting);
+router.put("/:id", updateMeeting);
 
 export default router;

@@ -41,3 +41,23 @@ export const deleteMeeting = async (req: Request, res: Response) => {
         return res.status(500).json({ message: error.message });
     }
 };
+
+export const updateMeeting = async (req: Request, res: Response) => {
+    try {
+        const { id } = req.params;
+
+        const { description, fechaReunion} = req.body;
+        const updatedMeeting = await prisma.meeting.update({
+            where: { id: parseInt(id) },
+            data: {
+                description: description,
+                fechaReunion: fechaReunion
+            }
+        });
+        if (!updatedMeeting) throw new Error("El meeting con el ID señalado no existe.");
+        return res.status(200).json({ message: "meeting eliminada correctamente" });
+    } catch (error: any) {
+        console.error("Error al intentar eliminar una meeting ->", error.message);
+        return res.status(500).json({ message: error.message });
+    }
+};

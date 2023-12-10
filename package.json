@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node build/index.js",
-    "reset-db": "npx prisma migrate reset && npx prisma migrate dev --name init",
+    "reset-db": " npx prisma migrate dev --name init",
     "dev": "npm run reset-db && nodemon --exec ts-node src/index.ts --ext ts",
     "tsc": "tsc",
     "test": "jest",

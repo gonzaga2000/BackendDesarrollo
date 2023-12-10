@@ -4,7 +4,8 @@ import {
     getMeetings,
     createMeeting,
     deleteMeeting,
-    getMeeting
+    getMeeting, 
+    updateMeeting
 } from "../../../controllers/meetings/user/meetings.controller";
 
 const router = express.Router();
@@ -16,5 +17,6 @@ router.get("/", getMeetings);
 router.get("/:id", getMeeting);
 router.post("/", createMeeting);
 router.delete("/:id", deleteMeeting);
+router.put("/:id", updateMeeting);
 
 export default router;
