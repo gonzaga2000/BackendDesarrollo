@@ -25,13 +25,16 @@ model User {
 model Meeting {
   id           Int        @id @default(autoincrement())                 
   description  String
-  fecha        DateTime          
+  fechaCreacion  String
+  fechaReunion   String
+  tamanoEmpresa  String       
   owner        User       @relation(fields: [ownerId], references: [id], onDelete: Cascade)
   ownerId      String
   client       Client?     @relation(fields: [clientId], references: [id])
   clientId     String?
+  clientName   String
   clientMail   String
-  externalMail String
+  externalName String
   createdAt    DateTime   @default(now())
   updatedAt    DateTime   @updatedAt
 }

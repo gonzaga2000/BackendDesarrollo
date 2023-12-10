@@ -8,6 +8,7 @@ export const getMeetings = async (req: Request, res: Response) => {
         const meetings = await prisma.meeting.findMany(
             {where: {ownerId: req.body.requestUser.id}
         });
+        console.log(meetings);
         return res.status(200).json(meetings);
     } catch (error: any) {
         console.error("Error al intentar obtener todas las reuniones ->", error.message);
@@ -32,22 +33,37 @@ export const getMeeting = async (req: Request, res: Response) => {
 
 export const createMeeting = async (req: Request, res: Response) => {
     try {
-      const { description, fecha, clientMail, clientActual} = req.body;
+      const { description, fechaCreacion, fechaReunion, clientMail, tamanoEmpresa, clientName, externalName } = req.body;
       const client = await prisma.client.findUnique({
         where: { email: clientMail }
     });
-      const meeting = await prisma.meeting.create({
+
+    console.log(tamanoEmpresa);
+
+        
+      if (client){  
+        const meeting = await prisma.meeting.create({
         data: {
-          fecha: fecha,
+            fechaCreacion: fechaCreacion,
+            fechaReunion: fechaReunion,
+            tamanoEmpresa: tamanoEmpresa,
+            clientName: clientName,
+            externalName: externalName,
+
           description: description,
           owner: { connect: { id: req.body.requestUser.id } },
           clientMail: clientMail,
-          client: { connect: { id: client?.id } },
-          externalMail: "externalMail"
+          client: { connect: { id: client?.id } }
         }
-      }); // Corrección aquí: se elimina un paréntesis adicional.
-      
+      }); 
       return res.status(200).json(meeting);
+    }
+    else{
+        console.log("error, cliente no esta!");
+        return res.status(500).json("cliente3 no existe");
+    }
+      
+      
     } catch (error: any) {
       console.error("Error al intentar crear una nueva meeting ->", error.message);
       return res.status(500).json({ message: error.message });

@@ -1,10 +1,9 @@
 -- CreateTable
 CREATE TABLE "User" (
     "id" TEXT NOT NULL PRIMARY KEY,
-    "email" TEXT NOT NULL,
-    "password" TEXT NOT NULL,
-    "firstName" TEXT NOT NULL,
-    "lastName" TEXT NOT NULL,
+    "email" TEXT,
+    "firstName" TEXT,
+    "lastName" TEXT,
     "role" TEXT NOT NULL,
     "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" DATETIME NOT NULL
@@ -14,9 +13,12 @@ CREATE TABLE "User" (
 CREATE TABLE "Meeting" (
     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     "description" TEXT NOT NULL,
-    "fecha" DATETIME NOT NULL,
+    "fechaCreacion" TEXT NOT NULL,
+    "fechaReunion" TEXT NOT NULL,
+    "tamanoEmpresa" TEXT NOT NULL,
     "ownerId" TEXT NOT NULL,
     "clientId" TEXT,
+    "clientName" TEXT NOT NULL,
     "clientMail" TEXT NOT NULL,
     "externalMail" TEXT NOT NULL,
     "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -28,10 +30,9 @@ CREATE TABLE "Meeting" (
 -- CreateTable
 CREATE TABLE "Client" (
     "id" TEXT NOT NULL PRIMARY KEY,
-    "email" TEXT NOT NULL,
-    "password" TEXT NOT NULL,
-    "firstName" TEXT NOT NULL,
-    "lastName" TEXT NOT NULL,
+    "email" TEXT,
+    "firstName" TEXT,
+    "lastName" TEXT,
     "role" TEXT NOT NULL,
     "country" TEXT,
     "company" TEXT,

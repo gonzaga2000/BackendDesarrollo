@@ -1,38 +1,42 @@
 import { Request, Response, NextFunction } from "express";
 import { PrismaClient } from "@prisma/client";
 import dotenv from "dotenv";
-import jwksClient from 'jwks-rsa';
 import jwt from 'jsonwebtoken';
+import jwksClient from 'jwks-rsa';
 dotenv.config();
-
 const prisma = new PrismaClient();
-// Configuración del cliente JWKS
+
+
+
+
 
 export const userMustBeLogged = async (req: Request, res: Response, next: NextFunction) => {
   try {
     console.log("Ejecutando middleware verifica que usuario exista y lo agrega al req.body");
-    const userId = req.body.userId;
+    const userId = req.headers.authorization; 
     console.log("Imprimiendo el ID del usuario:", userId);
+      
+      const user = await prisma.user.findFirst({ where: { id: userId } });
+      console.log(user);
+      const client = await prisma.client.findFirst({ where: { id: userId } });
+      console.log(client);
 
-    const user = await prisma.user.findFirst({ where: { id:userId } });
-    console.log(user)
-    const client = await prisma.client.findFirst({ where: { id:userId } });
-    console.log(client)
+      if (user) {
+        req.body.requestUser = user;
+      } else if (client) {
+        req.body.requestUser = client;
+      }
 
-    if (user){
-      req.body.requestUser= user;
-    }
-    if (client){
-      req.body.requestUser= client;
 
-    }
-    next();
-    return;
+
+      next();
+
   } catch (error: any) {
     console.error("Error al verificar que el usuario esté loggeado ->", error.message);
     return res.status(401).json({ message: error.message });
   }
 };
+
 
 export const userMustBeAdmin = async (req: Request, res: Response, next: NextFunction) => {
   try {
